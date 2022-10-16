@@ -6,34 +6,21 @@ export interface questionInterface {
     question?: string
     type?: string
 }
-// export interface test {
-//     name: string
-// }
-// export function QuestionAnswer (prop: test) {
-//
-//     return(
-//         <div className="question-container">
-//             <h2>This is the question {prop.name}</h2>
-//             <div className="answer-container">
-//                 <button className="question">Answer</button>
-//                 <button className="question">Answer</button>
-//                 <button className="question">Answer</button>
-//                 <button className="question">Answer</button>
-//             </div>
-//         </div>
-//     )
-// }
 
-export function QuestionAnswer (prop: questionInterface) {
-
+export function QuestionAnswer ({question, correct_answer, incorrect_answers}: questionInterface) {
+    // const randomIndex = Math.ceil(Math.random() * 3)
+    // const answerArrMutable = incorrect_answers // to avoid mutating the incoming prop
+    // // answerArrMutable.splice(randomIndex,0, correct_answer)
+    // const answers = answerArrMutable.map(answer => {
+    //     return <button className="question" key={Math.random() * 100}>{answer}</button>
+    // })
+    // console.log(correct_answer, randomIndex, answerArrMutable)
+    console.log(question)
     return(
         <div className="question-container">
-            <h2>This is the question {prop.category}</h2>
+            <h2>This is the question {question}</h2>
             <div className="answer-container">
-                <button className="question">Answer</button>
-                <button className="question">Answer</button>
-                <button className="question">Answer</button>
-                <button className="question">Answer</button>
+                {/*{answers}*/}
             </div>
         </div>
     )

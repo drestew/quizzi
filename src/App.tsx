@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import './components/Question'
-import {QuestionAnswer} from "./components/Question";
+import {QuestionAnswer, questionInterface} from "./components/Question";
 
 const qArr = [
     {
@@ -16,17 +16,23 @@ const qArr = [
 ]
 
 function App() {
-    const [questions, setQuestions] = useState(qArr)
-    // useEffect(() => {
-    //     fetch('https://opentdb.com/api.php?amount=10&category=17&difficulty=medium&type=multiple')
-    //         .then(resp => resp.json())
-    //         .then(data => setQuestions(data))
-    // }, [])
-
+    const [questions, setQuestions] = useState<questionInterface[]>([])
+    useEffect(() => {
+        fetch('https://opentdb.com/api.php?amount=10&category=17&difficulty=medium&type=multiple')
+            .then(resp => resp.json())
+            .then(data => setQuestions(data.results))
+        console.log("render")
+    }, [])
+    // console.log(questions)
 
 
     const questionList = questions.map(question => {
-        return <QuestionAnswer  category={question.category} />
+        return <QuestionAnswer
+            key={Math.random() * 100}
+            question={question.question}
+            correct_answer={question.correct_answer}
+            incorrect_answers={question.incorrect_answers}
+        />
     })
 
     return (
