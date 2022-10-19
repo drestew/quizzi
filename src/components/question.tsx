@@ -19,6 +19,7 @@ export interface questionInterface {
   type?: string;
   id: string;
   selectAnswer: (questionId: string, answerId: string) => void;
+  answerCorrect: boolean;
 }
 
 export interface answerInterface {
