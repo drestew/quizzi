@@ -1,40 +1,11 @@
+import React from "react";
+import { question } from "./types";
 import Answer from "./answer";
 
-export interface questionInterface {
-  category?: string;
-  correct_answer: {
-    text: string;
-    result: string;
-    selected: boolean;
-    id: string;
-  };
-  incorrect_answers: Array<{
-    text: string;
-    result: string;
-    selected: boolean;
-    id: string;
-  }>;
-  difficulty?: string;
-  question: string;
-  type?: string;
-  id: string;
-  selectAnswer: (questionId: string, answerId: string) => void;
-  answerCorrect: boolean;
-}
-
-export interface answerInterface {
-  answer: string;
-  id: string;
-  selectAnswer: () => void;
-  selected: boolean;
-}
-export function QuestionAnswer({
-  question,
-  correct_answer,
-  incorrect_answers,
-  selectAnswer,
-  id,
-}: questionInterface) {
+export function QuestionAnswer(
+  { question, correct_answer, incorrect_answers, selectAnswer, id }: question,
+  quizComplete: boolean
+) {
   const randomIndex = Math.ceil(Math.random() * 3);
   // TODO create function for randomizing the order of the answer array
   // const answerArrMutable = incorrect_answers // to avoid mutating the incoming prop
@@ -54,6 +25,7 @@ export function QuestionAnswer({
         id={answer.id}
         selectAnswer={() => selectAnswer(id, answer.id)}
         selected={answer.selected}
+        quizComplete={quizComplete}
       />
     );
   });

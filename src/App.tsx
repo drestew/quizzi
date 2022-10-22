@@ -1,20 +1,23 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import "./App.css";
-import { QuestionAnswer, questionInterface } from "./components/question";
+import { QuestionAnswer } from "./components/question";
+import { question } from "./components/types";
 import { nanoid } from "nanoid";
 
 function App() {
-  const [questions, setQuestions] = useState<questionInterface[]>([]);
-  const [correctAnswers, setCorrectAnswers] = useState<questionInterface[]>([]);
+  const [questions, setQuestions] = useState<question[]>([]);
+  const [correctAnswers, setCorrectAnswers] = useState<question[]>([]);
+  const [quizComplete, setQuizComplete] = useState(false);
 
   useEffect(() => {
     fetch(
       "https://opentdb.com/api.php?amount=10&category=17&difficulty=medium&type=multiple"
     )
       .then((resp) => resp.json())
-      .then((data) =>
+      .then((data: any) =>
         setQuestions(() =>
-          data.results.map((question: questionInterface) => {
+          data.results.map((question: question) => {
             return {
               ...question,
               id: nanoid(),
@@ -40,6 +43,8 @@ function App() {
       );
   }, []);
   console.log(questions);
+  const x = 4;
+  console.log(x + 5);
 
   function selectAnswer(questionId: string, answerId: string): void {
     return setQuestions((questions) =>
@@ -70,10 +75,13 @@ function App() {
     );
   }
 
-  function checkAnswer(questionId: string, answerId: string): void {}
-  // TODO highlight answer when selected -- DONE
-  // TODO add property for question object that states whether the selected answer was correct -- DONE
-  // TODO styling
+  function checkAnswers(): question[] {
+    const correctAnswers = questions.filter(
+      (question) => question.answerCorrect
+    );
+    console.log(correctAnswers.length);
+    return correctAnswers;
+  }
 
   const questionList = questions.map((question) => {
     return (
@@ -93,7 +101,10 @@ function App() {
     <div className="App">
       {questionList}
       <div>
-        <button className="results-btn">Submit Answers</button>
+        <p>Your score is {}/10</p>
+        <button className="results-btn" onClick={checkAnswers}>
+          Submit Answers
+        </button>
       </div>
     </div>
   );
