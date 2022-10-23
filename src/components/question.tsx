@@ -2,10 +2,14 @@ import React from "react";
 import { question } from "./types";
 import Answer from "./answer";
 
-export function QuestionAnswer(
-  { question, correct_answer, incorrect_answers, selectAnswer, id }: question,
-  quizComplete: boolean
-) {
+export function QuestionAnswer({
+  question,
+  correct_answer,
+  incorrect_answers,
+  selectAnswer,
+  id,
+  quizComplete,
+}: question) {
   const randomIndex = Math.ceil(Math.random() * 3);
   // TODO create function for randomizing the order of the answer array
   // const answerArrMutable = incorrect_answers // to avoid mutating the incoming prop
@@ -26,6 +30,7 @@ export function QuestionAnswer(
         selectAnswer={() => selectAnswer(id, answer.id)}
         selected={answer.selected}
         quizComplete={quizComplete}
+        correctAnswer={answer.id === correct_answer.id || false}
       />
     );
   });

@@ -18,6 +18,7 @@ export interface question {
   id: string;
   selectAnswer: (questionId: string, answerId: string) => void;
   answerCorrect: boolean;
+  quizComplete: boolean;
 }
 
 export interface answer {
@@ -26,4 +27,5 @@ export interface answer {
   selectAnswer: () => void;
   selected: boolean;
   quizComplete: boolean;
+  correctAnswer: boolean;
 }

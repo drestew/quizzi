@@ -7,7 +7,7 @@ import { nanoid } from "nanoid";
 
 function App() {
   const [questions, setQuestions] = useState<question[]>([]);
-  const [correctAnswers, setCorrectAnswers] = useState<question[]>([]);
+  const [correctAnswers, setCorrectAnswers] = useState<number>(0);
   const [quizComplete, setQuizComplete] = useState(false);
 
   useEffect(() => {
@@ -43,8 +43,6 @@ function App() {
       );
   }, []);
   console.log(questions);
-  const x = 4;
-  console.log(x + 5);
 
   function selectAnswer(questionId: string, answerId: string): void {
     return setQuestions((questions) =>
@@ -75,12 +73,36 @@ function App() {
     );
   }
 
-  function checkAnswers(): question[] {
-    const correctAnswers = questions.filter(
-      (question) => question.answerCorrect
+  function checkAnswers() {
+    const numCorrect = questions
+      .map((question) => question)
+      .filter((question) => question.answerCorrect);
+    console.log(numCorrect);
+    setCorrectAnswers(numCorrect.length);
+    setQuizComplete(true);
+  }
+
+  function restartQuiz() {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    setCorrectAnswers(0);
+    setQuizComplete(false);
+    return setQuestions((questions) =>
+      questions.map((question) => {
+        const answers = [
+          question.correct_answer,
+          ...question.incorrect_answers,
+        ];
+        const selectedToFalse = answers.map((answer) => {
+          return { ...answer, selected: false };
+        });
+        return {
+          ...question,
+          answerCorrect: false,
+          correct_answer: selectedToFalse[0],
+          incorrect_answers: selectedToFalse.slice(1),
+        };
+      })
     );
-    console.log(correctAnswers.length);
-    return correctAnswers;
   }
 
   const questionList = questions.map((question) => {
@@ -93,18 +115,24 @@ function App() {
         id={question.id}
         selectAnswer={selectAnswer}
         answerCorrect={question.answerCorrect}
+        quizComplete={quizComplete}
       />
     );
   });
 
   return (
     <div className="App">
-      {questionList}
+      <div className="questions-container">{questionList}</div>
+      {quizComplete && <p>Your score is {correctAnswers}/10</p>}
       <div>
-        <p>Your score is {}/10</p>
-        <button className="results-btn" onClick={checkAnswers}>
-          Submit Answers
-        </button>
+        {questions.length > 0 && (
+          <button
+            className="results-btn"
+            onClick={quizComplete ? () => restartQuiz() : () => checkAnswers()}
+          >
+            {quizComplete ? "Restart Quiz" : "Check Answers"}
+          </button>
+        )}
       </div>
     </div>
   );

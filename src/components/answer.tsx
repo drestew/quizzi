@@ -7,8 +7,9 @@ export default function Answer({
   selectAnswer,
   selected,
   quizComplete,
+  correctAnswer,
 }: answer) {
-  const styles = selected
+  const styleSelectedAnswer = selected
     ? {
         backgroundColor: "#314776",
         color: "rgb(255, 240, 171)",
@@ -18,8 +19,27 @@ export default function Answer({
         color: "#314776",
         border: "solid 1px #314776",
       };
+
+  const styleCompletedQuiz = function () {
+    let styles;
+    if (correctAnswer) {
+      styles = { backgroundColor: "#6C8319", color: "rgb(255, 240, 171)" };
+    } else if (!correctAnswer && selected) {
+      styles = {
+        backgroundColor: "#75163D",
+        color: "rgb(255, 240, 171)",
+        opacity: "50%",
+      };
+    } else {
+      styles = styleSelectedAnswer;
+    }
+    return styles;
+  };
+
+  const answerStyle = quizComplete ? styleCompletedQuiz() : styleSelectedAnswer;
+
   return (
-    <button id={id} onClick={selectAnswer} style={styles}>
+    <button id={id} onClick={selectAnswer} style={answerStyle}>
       {answer}
     </button>
   );
