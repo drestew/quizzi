@@ -1,14 +1,16 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import "./App.css";
 import { QuestionAnswer } from "./components/question";
 import { question } from "./components/types";
 import { nanoid } from "nanoid";
+import { shuffle } from "lodash";
 
 function App() {
   const [questions, setQuestions] = useState<question[]>([]);
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
   const [quizComplete, setQuizComplete] = useState(false);
+  const [initialRender, setIntitialRender] = useState(0);
 
   useEffect(() => {
     fetch(
@@ -23,7 +25,7 @@ function App() {
               id: nanoid(),
               correct_answer: {
                 text: question.correct_answer,
-                result: "correct", // this is to specify which answer is which once the correct answer and
+                result: "correct", // this is to specify which text is which once the correct text and
                 // incorrect answers are combined into a single array
                 selected: false,
                 id: nanoid(),
@@ -41,8 +43,8 @@ function App() {
           })
         )
       );
+    setIntitialRender((initialRender) => initialRender + 1);
   }, []);
-  console.log(questions);
 
   function selectAnswer(questionId: string, answerId: string): void {
     return setQuestions((questions) =>
@@ -54,7 +56,7 @@ function App() {
           ];
           const newAnswers = answers.map((answer) => {
             return answer.id === answerId
-              ? { ...answer, selected: !answer.selected }
+              ? { ...answer, selected: true }
               : { ...answer, selected: false };
           });
           return {
@@ -106,6 +108,12 @@ function App() {
   }
 
   const questionList = questions.map((question) => {
+    const answerOrder =
+      initialRender === 0
+        ? shuffle([question.correct_answer, ...question.incorrect_answers])
+        : [question.correct_answer, ...question.incorrect_answers];
+    // const answerOrder = shuffle([question.correct_answer, ...question.incorrect_answers])
+    console.log(initialRender);
     return (
       <QuestionAnswer
         key={question.id}
@@ -116,6 +124,7 @@ function App() {
         selectAnswer={selectAnswer}
         answerCorrect={question.answerCorrect}
         quizComplete={quizComplete}
+        answerOrder={answerOrder}
       />
     );
   });

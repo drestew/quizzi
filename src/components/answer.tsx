@@ -3,7 +3,7 @@ import { answer } from "./types";
 
 export default function Answer({
   id,
-  answer,
+  text,
   selectAnswer,
   selected,
   quizComplete,
@@ -40,7 +40,7 @@ export default function Answer({
 
   return (
     <button id={id} onClick={selectAnswer} style={answerStyle}>
-      {answer}
+      {text}
     </button>
   );
 }

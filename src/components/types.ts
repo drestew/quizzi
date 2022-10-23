@@ -19,10 +19,16 @@ export interface question {
   selectAnswer: (questionId: string, answerId: string) => void;
   answerCorrect: boolean;
   quizComplete: boolean;
+  answerOrder: Array<{
+    text: string;
+    result: string;
+    selected: boolean;
+    id: string;
+  }>;
 }
 
 export interface answer {
-  answer: string;
+  text: string;
   id: string;
   selectAnswer: () => void;
   selected: boolean;
