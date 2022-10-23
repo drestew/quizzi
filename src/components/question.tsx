@@ -1,44 +1,43 @@
-import React from "react";
-import { question } from "./types";
+import React, {useState, useMemo} from "react";
+import {question} from "./types";
 import Answer from "./answer";
+import {nanoid} from "nanoid";
+
+const randomizeOrder = function (answers: any) {
+  const randomIndex = Math.ceil(Math.random() * 3);
+  const correct_answer = answers.shift();
+  answers.splice(randomIndex, 0, correct_answer);
+  return answers;
+};
 
 export function QuestionAnswer({
-  question,
-  correct_answer,
-  incorrect_answers,
-  selectAnswer,
-  id,
-  quizComplete,
-}: question) {
-  const randomIndex = Math.ceil(Math.random() * 3);
-  // TODO create function for randomizing the order of the answer array
-  // const answerArrMutable = incorrect_answers // to avoid mutating the incoming prop
-  // answerArrMutable.splice(randomIndex,0, correct_answer)
-  //TODO add all answers to sepearate array so the incoming prop (incorrect_answers) won't be mutated
-  //TODO create a subarray of the answers: [answer, incorrect/correct]
-  //TODO add a random number to be associated with each answer and then sort
+                                 question,
+                                 correct_answer,
+                                 incorrect_answers,
+                                 selectAnswer,
+                                 id,
+                                 quizComplete,
+                                 answerOrder,
+                               }: question) {
 
-  // const answers = answerArrMutable.map(answer => {
-  //     return <button className="question" key={nanoid()} onClick={selectAnswer}>{answer}</button>
-  // })
-  const answers = [correct_answer, ...incorrect_answers].map((answer) => {
+  const answers = answerOrder.map((answer: any) => {
     return (
-      <Answer
-        key={answer.text}
-        answer={answer.text}
-        id={answer.id}
-        selectAnswer={() => selectAnswer(id, answer.id)}
-        selected={answer.selected}
-        quizComplete={quizComplete}
-        correctAnswer={answer.id === correct_answer.id || false}
-      />
+        <Answer
+            key={nanoid()}
+            text={answer.text}
+            id={answer.id}
+            selectAnswer={() => selectAnswer(id, answer.id)}
+            selected={answer.selected}
+            quizComplete={quizComplete}
+            correctAnswer={answer.id === correct_answer.id || false}
+        />
     );
   });
 
   return (
-    <div className="question-container">
-      <h2>{question}</h2>
-      <div className="answer-container">{answers}</div>
-    </div>
+      <div className="question-container">
+        <h2>{question}</h2>
+        <div className="answer-container">{answers}</div>
+      </div>
   );
 }
