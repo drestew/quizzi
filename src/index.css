@@ -12,6 +12,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
+    box-sizing: border-box;
 }
 
 a {
@@ -28,11 +29,12 @@ body {
     margin: 0;
     display: flex;
     place-items: center;
+    justify-content: center;
     min-width: 320px;
     min-height: 100vh;
     background: rgb(255, 255, 255);
     color: #08193E;
-    padding: 2rem;
+    padding: 0 2rem 2rem 2rem;
 }
 
 h1 {
@@ -52,8 +54,7 @@ button {
 }
 
 .questions-container {
-    margin-bottom: 2rem;
-    padding: 0 6rem;
+    padding: 2rem 6rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -72,11 +73,27 @@ button {
 
 .quiz-score {
     text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
-.results-btn {
+.primary-btn {
     background: #314776;
     color: rgb(255, 240, 171);
     display: block;
-    margin: 0 auto;
+    margin: 1rem auto;
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.modal-description {
+    font-size: 2rem;
+    margin-bottom: 5rem;
 }

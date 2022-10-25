@@ -35,3 +35,7 @@ export interface answer {
   quizComplete: boolean;
   correctAnswer: boolean;
 }
+
+export interface modal {
+  startQuiz: () => void;
+}
