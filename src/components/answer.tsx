@@ -39,7 +39,12 @@ export default function Answer({
   const answerStyle = quizComplete ? styleCompletedQuiz() : styleSelectedAnswer;
 
   return (
-    <button id={id} onClick={selectAnswer} style={answerStyle}>
+    <button
+      id={id}
+      onClick={selectAnswer}
+      style={answerStyle}
+      className="answer-btn"
+    >
       {text}
     </button>
   );

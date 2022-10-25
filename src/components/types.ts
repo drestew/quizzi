@@ -19,7 +19,7 @@ export interface question {
   selectAnswer: (questionId: string, answerId: string) => void;
   answerCorrect: boolean;
   quizComplete: boolean;
-  answerOrder: Array<{
+  answers: Array<{
     text: string;
     result: string;
     selected: boolean;
