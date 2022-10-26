@@ -3,45 +3,43 @@ import { QuestionAnswer } from "./question";
 import { question } from "./types";
 import { nanoid } from "nanoid";
 import { shuffle } from "lodash";
+import { data } from "../data";
 
 export default function QuestionList() {
   const [questions, setQuestions] = useState<question[]>([]);
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
   const [quizComplete, setQuizComplete] = useState(false);
 
+  const dataQuestions = new Promise((resolve) => resolve(data));
   useEffect(() => {
-    fetch(
-      "https://opentdb.com/api.php?amount=10&category=17&difficulty=medium&type=multiple"
-    )
-      .then((resp) => resp.json())
-      .then((data: any) =>
-        setQuestions(() =>
-          data.results.map((question: question) => {
-            const correctAnswerId = nanoid();
-            return {
-              ...question,
-              id: nanoid(),
-              correct_answer: {
-                text: question.correct_answer,
-                id: correctAnswerId,
-              },
-              answerCorrect: false,
-              answers: shuffle(
-                [question.correct_answer, ...question.incorrect_answers].map(
-                  (answer, index) => {
-                    return {
-                      text: answer,
-                      result: index === 0 ? "correct" : "incorrect",
-                      selected: false,
-                      id: index === 0 ? correctAnswerId : nanoid(),
-                    };
-                  }
-                )
-              ),
-            };
-          })
-        )
-      );
+    dataQuestions.then((dataQuestions: any) =>
+      setQuestions(() => {
+        return dataQuestions.map((question: question) => {
+          const correctAnswerId = nanoid();
+          return {
+            ...question,
+            id: nanoid(),
+            correct_answer: {
+              text: question.correct_answer,
+              id: correctAnswerId,
+            },
+            answerCorrect: false,
+            answers: shuffle(
+              [question.correct_answer, ...question.incorrect_answers].map(
+                (answer, index) => {
+                  return {
+                    text: answer,
+                    result: index === 0 ? "correct" : "incorrect",
+                    selected: false,
+                    id: index === 0 ? correctAnswerId : nanoid(),
+                  };
+                }
+              )
+            ),
+          };
+        });
+      })
+    );
   }, []);
 
   function selectAnswer(questionId: string, answerId: string): void {

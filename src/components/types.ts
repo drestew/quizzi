@@ -1,13 +1,13 @@
 export interface question {
   category?: string;
   correct_answer: {
-    text: string;
+    text: string | number;
     result: string;
     selected: boolean;
     id: string;
   };
   incorrect_answers: Array<{
-    text: string;
+    text: string | number;
     result: string;
     selected: boolean;
     id: string;
@@ -20,7 +20,7 @@ export interface question {
   answerCorrect: boolean;
   quizComplete: boolean;
   answers: Array<{
-    text: string;
+    text: string | number;
     result: string;
     selected: boolean;
     id: string;
