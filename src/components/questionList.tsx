@@ -4,6 +4,7 @@ import { question } from "./types";
 import { nanoid } from "nanoid";
 import { shuffle } from "lodash";
 import { data } from "../data";
+import LineSeparator from "./lineSeparator";
 
 export default function QuestionList() {
   const [questions, setQuestions] = useState<question[]>([]);
@@ -91,17 +92,20 @@ export default function QuestionList() {
 
   const questionList = questions.map((question) => {
     return (
-      <QuestionAnswer
-        key={question.id}
-        question={question.question}
-        correct_answer={question.correct_answer}
-        incorrect_answers={question.incorrect_answers}
-        id={question.id}
-        selectAnswer={selectAnswer}
-        answerCorrect={question.answerCorrect}
-        quizComplete={quizComplete}
-        answers={question.answers}
-      />
+      <>
+        <QuestionAnswer
+          key={question.id}
+          question={question.question}
+          correct_answer={question.correct_answer}
+          incorrect_answers={question.incorrect_answers}
+          id={question.id}
+          selectAnswer={selectAnswer}
+          answerCorrect={question.answerCorrect}
+          quizComplete={quizComplete}
+          answers={question.answers}
+        />
+        <LineSeparator />
+      </>
     );
   });
 
