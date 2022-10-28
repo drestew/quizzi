@@ -16,14 +16,13 @@ export default function QuestionList() {
     dataQuestions.then((dataQuestions: any) =>
       setQuestions(() => {
         return dataQuestions.map((question: question) => {
-          const correctAnswerId = nanoid();
           return {
             ...question,
             id: nanoid(),
             correct_answer: question.correct_answer.map((answer) => {
               return {
                 text: answer,
-                id: correctAnswerId,
+                id: nanoid(),
               };
             }),
             answerCorrect: false,
@@ -138,7 +137,7 @@ export default function QuestionList() {
           answers={question.answers}
           type={question.type}
         />
-        <LineSeparator />
+        <LineSeparator key={nanoid()}/>
       </>
     );
   });
@@ -147,7 +146,7 @@ export default function QuestionList() {
     <div className="question-list">
       <div className="questions-container">{questionList}</div>
       {quizComplete && (
-        <p className="quiz-score">Your score is {correctAnswers}/10</p>
+        <p className="quiz-score">{correctAnswers === 9 ? `Perfect score! 9/9` : `Your score is ${correctAnswers}/9`}</p>
       )}
       <div>
         {questions.length > 0 && (

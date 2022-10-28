@@ -77,8 +77,7 @@ export const data = [
       "The EIGRP process is initialized by which of the following techniques? Select all that apply.",
     correct_answer: [
       'Global command "router EIGRP as-number"',
-      "Global command",
-      "Router EIGRP process-name",
+      'Global command "router EIGRP process-name"',
     ],
     incorrect_answers: [
       'Interface command "IP EIGRP as-number IPv4 unicast"',

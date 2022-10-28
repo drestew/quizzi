@@ -6,8 +6,11 @@ export default function Answer({
   selectAnswer,
   selected,
   quizComplete,
-  correctAnswer,
+  answers,
 }: answer) {
+
+  const correctAnswerIds = answers.filter(answer => answer.result === 'correct').map(answer => answer.id)
+
   const styleSelectedAnswer = selected
     ? {
         backgroundColor: "#314776",
@@ -18,14 +21,20 @@ export default function Answer({
         color: "#314776",
         border: "solid 1px #314776",
       };
-
+      
   const styleCompletedQuiz = function () {
     let styles;
-    if (correctAnswer) {
+    if (correctAnswerIds.includes(id) && selected) {
       styles = { backgroundColor: "#6C8319", color: "rgb(255, 240, 171)" };
-    } else if (!correctAnswer && selected) {
+    } else if (!correctAnswerIds.includes(id) && selected) {
       styles = {
         backgroundColor: "#75163D",
+        color: "rgb(255, 240, 171)",
+        opacity: "50%",
+      };
+    } else if (correctAnswerIds.includes(id) && !selected) {
+      styles = {
+        backgroundColor: "#6C8319",
         color: "rgb(255, 240, 171)",
         opacity: "50%",
       };

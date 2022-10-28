@@ -33,7 +33,12 @@ export interface answer {
   selectAnswer: () => void;
   selected: boolean;
   quizComplete: boolean;
-  correctAnswer: boolean;
+  answers: Array<{
+    text: string | number;
+    result: string;
+    selected: boolean;
+    id: string;
+  }>,
 }
 
 export interface modal {
