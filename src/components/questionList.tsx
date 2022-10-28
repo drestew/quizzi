@@ -5,6 +5,7 @@ import { nanoid } from "nanoid";
 import { shuffle } from "lodash";
 import { data } from "../data";
 import LineSeparator from "./lineSeparator";
+import ReactConfetti from "react-confetti";
 
 export default function QuestionList() {
   const [questions, setQuestions] = useState<question[]>([]);
@@ -141,10 +142,12 @@ export default function QuestionList() {
       </>
     );
   });
-
+  const windowArea = {x: 0, y: window.screenY, w: window.innerWidth, h: window.innerHeight}
+  console.log(windowArea)
   return (
     <div className="question-list">
       <div className="questions-container">{questionList}</div>
+      {correctAnswers === 9 && <ReactConfetti height={4000} tweenDuration={10000} numberOfPieces={500} confettiSource={windowArea} gravity={0.15}/>}
       {quizComplete && (
         <p className="quiz-score">{correctAnswers === 9 ? `Perfect score! 9/9` : `Your score is ${correctAnswers}/9`}</p>
       )}
