@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { QuestionAnswer } from "./question";
 import { question } from "./types";
 import { nanoid } from "nanoid";
@@ -20,19 +20,23 @@ export default function QuestionList() {
           return {
             ...question,
             id: nanoid(),
-            correct_answer: {
-              text: question.correct_answer,
-              id: correctAnswerId,
-            },
+            correct_answer: question.correct_answer.map((answer) => {
+              return {
+                text: answer,
+                id: correctAnswerId,
+              };
+            }),
             answerCorrect: false,
             answers: shuffle(
-              [question.correct_answer, ...question.incorrect_answers].map(
-                (answer, index) => {
+              [...question.correct_answer, ...question.incorrect_answers].map(
+                (answer) => {
                   return {
                     text: answer,
-                    result: index === 0 ? "correct" : "incorrect",
+                    result: question.correct_answer.includes(answer)
+                      ? "correct"
+                      : "incorrect",
                     selected: false,
-                    id: index === 0 ? correctAnswerId : nanoid(),
+                    id: nanoid(),
                   };
                 }
               )
@@ -44,21 +48,50 @@ export default function QuestionList() {
   }, []);
 
   function selectAnswer(questionId: string, answerId: string): void {
+    const selectedQuestion = questions.filter(
+      (question) => question.id === questionId
+    );
+
+    const selectedAnswer = selectedQuestion[0].answers.filter((answer) => {
+      return answer.id === answerId && { ...answer, selected: true };
+    });
+
     return setQuestions((questions) =>
       questions.map((question) => {
         if (question.id === questionId) {
-          const newAnswers = question.answers.map((answer) => {
-            return answer.id === answerId
-              ? { ...answer, selected: true }
-              : { ...answer, selected: false };
-          });
-          return {
-            ...question,
-            answers: newAnswers,
-            answerCorrect: newAnswers.some(
-              (answer) => answer.result === "correct" && answer.selected
-            ),
-          };
+          let newAnswers;
+          if (question.type === "multiple") {
+            newAnswers = question.answers.map((answer) => {
+              return answer.id === selectedAnswer[0].id
+                ? {
+                    ...answer,
+                    selected: !answer.selected,
+                  }
+                : { ...answer };
+            });
+            return {
+              ...question,
+              answers: newAnswers,
+              answerCorrect: newAnswers.every(
+                (answer) =>
+                  (answer.result === "correct" && answer.selected) ||
+                  (answer.result === "incorrect" && !answer.selected)
+              ),
+            };
+          } else {
+            newAnswers = question.answers.map((answer) => {
+              return answer.id === answerId
+                ? { ...answer, selected: true }
+                : { ...answer, selected: false };
+            });
+            return {
+              ...question,
+              answers: newAnswers,
+              answerCorrect: newAnswers.some(
+                (answer) => answer.result === "correct" && answer.selected
+              ),
+            };
+          }
         } else {
           return question;
         }
@@ -103,6 +136,7 @@ export default function QuestionList() {
           answerCorrect={question.answerCorrect}
           quizComplete={quizComplete}
           answers={question.answers}
+          type={question.type}
         />
         <LineSeparator />
       </>

@@ -1,11 +1,11 @@
 export interface question {
   category?: string;
-  correct_answer: {
+  correct_answer: Array<{
     text: string | number;
     result: string;
     selected: boolean;
     id: string;
-  };
+  }>;
   incorrect_answers: Array<{
     text: string | number;
     result: string;
@@ -14,7 +14,7 @@ export interface question {
   }>;
   difficulty?: string;
   question: string;
-  type?: string;
+  type: string;
   id: string;
   selectAnswer: (questionId: string, answerId: string) => void;
   answerCorrect: boolean;

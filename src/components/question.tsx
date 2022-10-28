@@ -1,6 +1,7 @@
 import { question } from "./types";
 import Answer from "./answer";
 import { nanoid } from "nanoid";
+import React from "react";
 
 export function QuestionAnswer({
   question,
@@ -19,7 +20,7 @@ export function QuestionAnswer({
         selectAnswer={() => selectAnswer(id, answer.id)}
         selected={answer.selected}
         quizComplete={quizComplete}
-        correctAnswer={answer.id === correct_answer.id || false}
+        correctAnswer={answer.id === correct_answer || false}
       />
     );
   });
