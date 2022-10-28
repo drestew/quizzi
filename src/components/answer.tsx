@@ -1,4 +1,3 @@
-import React from "react";
 import { answer } from "./types";
 
 export default function Answer({
@@ -15,7 +14,7 @@ export default function Answer({
         color: "rgb(255, 240, 171)",
       }
     : {
-        backgroundColor: "rgba(255, 240, 171, 20%)",
+        backgroundColor: "#fff9e0",
         color: "#314776",
         border: "solid 1px #314776",
       };
